@@ -69,11 +69,11 @@
         }
         .app-card {
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px; /* More rounded corners for iOS-like look */
+            border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             min-width: 100px;
             width: 120px;
-            height: 150px; /* Adjusted height for iOS aspect ratio */
+            height: 150px;
             text-align: center;
             padding: 10px;
             flex: 0 0 auto;
@@ -86,8 +86,8 @@
         .app-card img {
             width: 80%;
             height: auto;
-            object-fit: contain; /* Ensures the image is not cropped */
-            border-radius: 15px; /* Rounded images to match card style */
+            object-fit: contain;
+            border-radius: 15px;
             margin-bottom: 10px;
         }
         .app-card a {
@@ -111,6 +111,7 @@
     <div class="apps" id="apps-container"></div>
 
     <script>
+        const DEFAULT_IMAGE_URL = 'https://your-default-image-url.com/default-image.jpg'; // Replace with your default image URL
         const greetingElement = document.getElementById('greeting');
         const dateElement = document.getElementById('date');
         const appsContainer = document.getElementById('apps-container');
@@ -126,7 +127,8 @@
                 const data = await response.json();
                 document.body.style.backgroundImage = `url(${data.urls.regular})`;
             } catch (error) {
-                console.error('Error fetching image:', error);
+                console.error('Error fetching image. Using default image:', error);
+                document.body.style.backgroundImage = `url(${DEFAULT_IMAGE_URL})`;
             }
         }
 
@@ -140,9 +142,21 @@
         dateElement.textContent = formatDate(now);
 
         // Determine the time-based greeting and background
-        if (month === 11 && date === 25) {
+        if ((month === 11 && date === 24) || (month === 11 && date === 25)) {
             greetingElement.textContent = 'Merry Christmas';
             setBackgroundImage('christmas');
+        } else if (month === 11 && date === 31) {
+            greetingElement.textContent = 'Happy New Year';
+            setBackgroundImage('new year');
+        } else if (month === 0 && date === 1) {
+            greetingElement.textContent = 'Happy New Year';
+            setBackgroundImage('new year');
+        } else if (month === 6 && date === 4) {
+            greetingElement.textContent = 'Happy 4th of July';
+            setBackgroundImage('4th of July');
+        } else if (month === 10 && date === 11) {
+            greetingElement.textContent = 'Happy Birthday to our founder';
+            setBackgroundImage('celebration');
         } else if (month === 9 && date === 31) {
             greetingElement.textContent = 'Happy Halloween';
             setBackgroundImage('halloween');
@@ -183,6 +197,17 @@
         }
 
         displayRandomApps();
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registered with scope:', registration.scope);
+                })
+                .catch(error => {
+                    console.error('ServiceWorker registration failed:', error);
+                });
+        }
     </script>
 </body>
 </html>
