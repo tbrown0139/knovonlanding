@@ -13,12 +13,12 @@
             align-items: center;
             height: 100vh;
             background-size: cover;
-            background-position: center; /* Ensure the image is centered */
-            background-repeat: no-repeat; /* Prevent the image from repeating */
+            background-position: center;
+            background-repeat: no-repeat;
             transition: background-image 0.5s ease-in-out;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #000; /* Fallback background */
+            background-color: #000;
             flex-direction: column;
         }
         .logo {
@@ -54,6 +54,7 @@
             text-align: center;
             padding: 10px;
             flex: 0 0 auto;
+            white-space: nowrap; /* Keep text on one line */
         }
         .app-card img {
             width: 50px;
@@ -104,7 +105,7 @@
             return date.toLocaleDateString('en-US', options);
         }
 
-        // Function to display the date
+        // Display the formatted date
         dateElement.textContent = formatDate(now);
 
         // Determine the time-based greeting and background
@@ -125,13 +126,13 @@
             setBackgroundImage('utah');
         }
 
-        // List of apps with their names and URLs
+        // List of apps with their names, URLs, and icons
         const apps = [
-            { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://www.example.com/disney-icon.png' },
-            { name: 'Knovon', url: 'https://knovon.org', icon: 'https://www.example.com/knovon-icon.png' },
-            { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://www.example.com/gmail-icon.png' },
-            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://www.example.com/zoho-icon.png' },
-            { name: 'Roblox', url: 'https://roblox.com', icon: 'https://www.example.com/roblox-icon.png' },
+            { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
+            { name: 'Knovon', url: 'https://knovon.org', icon: 'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7' },
+            { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/New_Logo_Gmail.svg' },
+            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png' },
+            { name: 'Roblox', url: 'https://roblox.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Logo.svg' },
         ];
 
         // Function to randomly select 3 apps and display them
