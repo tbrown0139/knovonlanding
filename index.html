@@ -51,7 +51,7 @@
         // Function to set the background image using Unsplash API
         async function setBackgroundImage(query) {
             try {
-                const response = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=YOUR_UNSPLASH_ACCESS_KEY`);
+                const response = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=1YhjZDYm-4BCbbVjF2hnUn_iRA2SK2xlJqI3dnl6XrQ`);
                 const data = await response.json();
                 document.body.style.backgroundImage = `url(${data.urls.regular})`;
             } catch (error) {
