@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knovon Landing Page</title>
+    <!-- Web app meta tags for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Knovon Landing Page">
+    <link rel="apple-touch-icon" href="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7">
+    <link rel="manifest" href="/manifest.json">
     <style>
         body {
             margin: 0;
@@ -63,7 +69,7 @@
         }
         .app-card {
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+            border-radius: 15px; /* More rounded corners for iOS-like look */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             min-width: 120px;
             text-align: center;
@@ -72,8 +78,10 @@
             white-space: nowrap;
         }
         .app-card img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
+            object-fit: cover; /* Prevent distortion */
+            border-radius: 12px; /* Rounded images for iOS-like style */
             margin-bottom: 10px;
         }
         .app-card a {
