@@ -69,25 +69,32 @@
         }
         .app-card {
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px; /* More rounded corners for iOS-like look */
+            border-radius: 20px; /* More rounded corners for iOS-like look */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            min-width: 120px;
+            min-width: 100px;
+            width: 120px;
+            height: 150px; /* Adjusted height for iOS aspect ratio */
             text-align: center;
             padding: 10px;
             flex: 0 0 auto;
             white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .app-card img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover; /* Prevent distortion */
-            border-radius: 12px; /* Rounded images for iOS-like style */
+            width: 80%;
+            height: auto;
+            object-fit: contain; /* Ensures the image is not cropped */
+            border-radius: 15px; /* Rounded images to match card style */
             margin-bottom: 10px;
         }
         .app-card a {
             text-decoration: none;
             color: #333;
             font-weight: bold;
+            font-size: 0.9em;
         }
         @media (max-width: 768px) {
             .greeting {
