@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knovon Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            transition: background-image 0.5s ease-in-out;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            opacity: 0.8;
+        }
+        .greeting {
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        @media (max-width: 768px) {
+            .greeting {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="path-to-knovon-logo.png" alt="Knovon Logo">
+    <div class="greeting" id="greeting">Good Morning</div>
+
+    <script>
+        const greetingElement = document.getElementById('greeting');
+        const now = new Date();
+        const hours = now.getHours();
+        const month = now.getMonth();
+        const date = now.getDate();
+        
+        // Determine the time-based greeting
+        if (month === 11 && date === 25) {
+            greetingElement.textContent = 'Merry Christmas';
+            document.body.style.backgroundImage = 'url("https://source.unsplash.com/1600x900/?christmas")';
+        } else if (month === 9 && date === 31) {
+            greetingElement.textContent = 'Happy Halloween';
+            document.body.style.backgroundImage = 'url("https://source.unsplash.com/1600x900/?halloween")';
+        } else if (hours < 12) {
+            greetingElement.textContent = 'Good Morning';
+            document.body.style.backgroundImage = 'url("https://source.unsplash.com/1600x900/?hawaii")';
+        } else if (hours < 18) {
+            greetingElement.textContent = 'Good Afternoon';
+            document.body.style.backgroundImage = 'url("https://source.unsplash.com/1600x900/?hawaii")';
+        } else {
+            greetingElement.textContent = 'Good Evening';
+            document.body.style.backgroundImage = 'url("https://source.unsplash.com/1600x900/?hawaii")';
+        }
+    </script>
+</body>
+</html>
