@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knovon Interactive Landing Page</title>
+    <title>Knovon Landing Page</title>
     <!-- Web app meta tags for iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -11,7 +11,6 @@
     <link rel="apple-touch-icon" href="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7">
     <link rel="manifest" href="/manifest.json">
     <style>
-        /* Existing styles remain unchanged */
         body {
             margin: 0;
             padding: 0;
@@ -83,11 +82,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .app-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
         .app-card img {
             width: 80%;
@@ -106,23 +100,6 @@
             .greeting {
                 font-size: 2em;
             }
-        }
-        /* Typing effect */
-        .typewriter {
-            display: inline-block;
-            border-right: 2px solid white;
-            padding-right: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: white; }
         }
         /* Alert styling */
         #offline-alert {
@@ -143,7 +120,7 @@
 <body>
     <img class="logo" src="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7" alt="Knovon Logo">
     <a class="portal-link" href="https://my.knovon.org" target="_blank">My Portal</a>
-    <div class="greeting" id="greeting" class="typewriter">Good Morning</div>
+    <div class="greeting" id="greeting">Good Morning</div>
     <div class="date" id="date"></div>
     <div class="apps" id="apps-container"></div>
 
@@ -160,69 +137,17 @@
         const hours = now.getHours();
         const month = now.getMonth();
         const date = now.getDate();
-        
-        let greetings = {
-            morning: "Good Morning",
-            afternoon: "Good Afternoon",
-            evening: "Good Evening",
-            christmas: "Merry Christmas",
-            halloween: "Happy Halloween",
-            newyear: "Happy New Year",
-            july4th: "Happy 4th of July",
-            birthday: "Happy Birthday to our founder"
-        };
 
-        // Function to determine the appropriate greeting
-        function getGreeting() {
-            if ((month === 11 && date === 24) || (month === 11 && date === 25)) return greetings.christmas;
-            if (month === 11 && date === 31 || (month === 0 && date === 1)) return greetings.newyear;
-            if (month === 6 && date === 4) return greetings.july4th;
-            if (month === 10 && date === 11) return greetings.birthday;
-            if (month === 9 && date === 31) return greetings.halloween;
-            if (hours < 12) return greetings.morning;
-            if (hours < 18) return greetings.afternoon;
-            return greetings.evening;
-        }
-
-        // Typing and untyping effect
-        function typeEffect(element, text, speed = 50) {
-            let i = 0;
-            element.classList.add('typewriter');
-            function typeWriter() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                }
+        // Function to set the background image using Unsplash API
+        async function setBackgroundImage(query) {
+            try {
+                const response = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=1YhjZDYm-4BCbbVjF2hnUn_iRA2SK2xlJqI3dnl6XrQ`);
+                const data = await response.json();
+                document.body.style.backgroundImage = `url(${data.urls.regular})`;
+            } catch (error) {
+                console.error('Error fetching image. Using default image:', error);
+                document.body.style.backgroundImage = `url(${DEFAULT_IMAGE_URL})`;
             }
-            typeWriter();
-        }
-
-        function eraseEffect(element, speed = 50) {
-            let i = element.textContent.length;
-            function eraseWriter() {
-                if (i > 0) {
-                    element.textContent = element.textContent.substring(0, i - 1);
-                    i--;
-                    setTimeout(eraseWriter, speed);
-                }
-            }
-            eraseWriter();
-        }
-
-        function cycleGreeting() {
-            let greetingText = getGreeting();
-            typeEffect(greetingElement, greetingText);
-            setTimeout(() => {
-                eraseEffect(greetingElement);
-                setTimeout(() => {
-                    typeEffect(greetingElement, "How can I help you today?");
-                    setTimeout(() => {
-                        eraseEffect(greetingElement);
-                        setTimeout(() => typeEffect(greetingElement, greetingText), 1000);
-                    }, 4000); // Pause before retyping greeting
-                }, 1500);
-            }, 5000); // Total cycle
         }
 
         // Function to format the date
@@ -234,19 +159,45 @@
         // Display the formatted date
         dateElement.textContent = formatDate(now);
 
-        // Start cycling the greeting
-        cycleGreeting();
-        setInterval(cycleGreeting, 10000); // Repeat every 10 seconds
+        // Determine the time-based greeting and background
+        if ((month === 11 && date === 24) || (month === 11 && date === 25)) {
+            greetingElement.textContent = 'Merry Christmas';
+            setBackgroundImage('christmas');
+        } else if (month === 11 && date === 31) {
+            greetingElement.textContent = 'Happy New Year';
+            setBackgroundImage('new year');
+        } else if (month === 0 && date === 1) {
+            greetingElement.textContent = 'Happy New Year';
+            setBackgroundImage('new year');
+        } else if (month === 6 && date === 4) {
+            greetingElement.textContent = 'Happy 4th of July';
+            setBackgroundImage('4th of July');
+        } else if (month === 10 && date === 11) {
+            greetingElement.textContent = 'Happy Birthday to our founder';
+            setBackgroundImage('celebration');
+        } else if (month === 9 && date === 31) {
+            greetingElement.textContent = 'Happy Halloween';
+            setBackgroundImage('halloween');
+        } else if (hours < 12) {
+            greetingElement.textContent = 'Good Morning';
+            setBackgroundImage('utah');
+        } else if (hours < 18) {
+            greetingElement.textContent = 'Good Afternoon';
+            setBackgroundImage('utah');
+        } else {
+            greetingElement.textContent = 'Good Evening';
+            setBackgroundImage('utah');
+        }
 
         // List of apps with their names, URLs, and icons
         const apps = [
             { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
             { name: 'Knovon', url: 'https://knovon.org', icon: 'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7' },
             { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png' },
-            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://uploads-ssl.webflow.com/5f1b9de4e3a10a76482182e0/5f35f1803ed832df685dbd92_zoho-logo.svg' },
+            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png' },
             { name: 'Roblox', url: 'https://roblox.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Logo.svg' },
             { name: 'GitHub', url: 'https://github.com', icon: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' },
-            { name: 'Canva', url: 'https://canva.com', icon: 'https://static.canva.com/static/images/favicon.png' },
+            { name: 'Canva', url: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Canva_Logo.png' },
             { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' }
         ];
 
