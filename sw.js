@@ -1,32 +1,54 @@
-const CACHE_NAME = 'knovon-cache-v1';
-const OFFLINE_URL = 'offline.html';
-const DEFAULT_IMAGE_URL = 'https://your-default-image-url.com/default-image.jpg'; // Replace with your default image
+const CACHE_NAME = 'knovon-cache-v2';
+const urlsToCache = [
+    '/', // Main page
+    '/index.html', // Assuming this is the page name
+    '/offline.html', // Offline fallback page
+    '/manifest.json', // Manifest file
+    '/sw.js', // Service worker file
+    'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7', // Knovon logo
+    'https://your-default-image-url.com/default-image.jpg', // Default image
+    'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg', // Disney icon
+    'https://upload.wikimedia.org/wikipedia/commons/4/45/New_Logo_Gmail.svg', // Gmail icon
+    'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png', // Zoho icon
+    'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Logo.svg' // Roblox icon
+];
 
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll([
-                OFFLINE_URL,
-                DEFAULT_IMAGE_URL,
-                // Add other assets you want to cache (CSS, logo, etc.)
-                'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7' // Knovon logo
-            ]);
-        })
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
     );
 });
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request).then(response => {
-            // Return cached response if found, else fetch from network
-            return response || fetch(event.request).catch(() => {
-                // If offline and request is for an image, serve the default image
-                if (event.request.destination === 'image') {
-                    return caches.match(DEFAULT_IMAGE_URL);
-                }
-                // Serve the offline page for other requests
-                return caches.match(OFFLINE_URL);
-            });
+        caches.match(event.request)
+            .then(response => {
+                // Return the cached response if found, or fetch from the network
+                return response || fetch(event.request).catch(() => {
+                    // If request is for an HTML page and network fails, return offline page
+                    if (event.request.headers.get('accept').includes('text/html')) {
+                        return caches.match('/offline.html');
+                    }
+                });
+            })
+    );
+});
+
+self.addEventListener('activate', event => {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
         })
     );
 });
