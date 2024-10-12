@@ -11,6 +11,7 @@
     <link rel="apple-touch-icon" href="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7">
     <link rel="manifest" href="/manifest.json">
     <style>
+        /* Existing styles remain unchanged */
         body {
             margin: 0;
             padding: 0;
@@ -119,7 +120,7 @@
 </head>
 <body>
     <img class="logo" src="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7" alt="Knovon Logo">
-    <a class="portal-link" href="https://your-portal-link.com" target="_blank">My Portal</a>
+    <a class="portal-link" href="https://my.knovon.org" target="_blank">My Portal</a>
     <div class="greeting" id="greeting">Good Morning</div>
     <div class="date" id="date"></div>
     <div class="apps" id="apps-container"></div>
@@ -128,7 +129,7 @@
     <div id="offline-alert">You are currently offline</div>
 
     <script>
-        const DEFAULT_IMAGE_URL = 'https://your-default-image-url.com/default-image.jpg'; // Replace with your default image URL
+        const DEFAULT_IMAGE_URL = 'https://mytab.knovon.net/intricate-explorer-0wyWY_aJJEE-unsplash.jpg';
         const greetingElement = document.getElementById('greeting');
         const dateElement = document.getElementById('date');
         const appsContainer = document.getElementById('apps-container');
@@ -191,11 +192,14 @@
 
         // List of apps with their names, URLs, and icons
         const apps = [
-            { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
+            { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://static-assets.bamgrid.com/product/disneyplus/images/logos/brand-lagoon-logo.d5955f43e8312f6939bd3a35deebd0ea.svg' },
             { name: 'Knovon', url: 'https://knovon.org', icon: 'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7' },
-            { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/New_Logo_Gmail.svg' },
-            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png' },
-            { name: 'Roblox', url: 'https://roblox.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Logo.svg' },
+            { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png' },
+            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://www.zoho.com/images/zmail/zmail-icon.png' },
+            { name: 'Roblox', url: 'https://roblox.com', icon: 'https://images.rbxcdn.com/1a4c10a1db0d50d69c5d381c5f880766.png' },
+            { name: 'GitHub', url: 'https://github.com', icon: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' },
+            { name: 'Canva', url: 'https://canva.com', icon: 'https://static.canva.com/static/images/favicon.png' },
+            { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'https://chat.openai.com/favicon-32x32.png' }
         ];
 
         // Function to randomly select 3 apps and display them
