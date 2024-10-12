@@ -101,6 +101,20 @@
                 font-size: 2em;
             }
         }
+        /* Alert styling */
+        #offline-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -110,11 +124,15 @@
     <div class="date" id="date"></div>
     <div class="apps" id="apps-container"></div>
 
+    <!-- Offline Alert -->
+    <div id="offline-alert">You are currently offline</div>
+
     <script>
         const DEFAULT_IMAGE_URL = 'https://your-default-image-url.com/default-image.jpg'; // Replace with your default image URL
         const greetingElement = document.getElementById('greeting');
         const dateElement = document.getElementById('date');
         const appsContainer = document.getElementById('apps-container');
+        const offlineAlert = document.getElementById('offline-alert');
         const now = new Date();
         const hours = now.getHours();
         const month = now.getMonth();
@@ -208,6 +226,21 @@
                     console.error('ServiceWorker registration failed:', error);
                 });
         }
+
+        // Offline Detection and Alerts
+        function updateOnlineStatus() {
+            if (!navigator.onLine) {
+                offlineAlert.style.display = 'block';
+            } else {
+                offlineAlert.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('offline', updateOnlineStatus);
+        window.addEventListener('online', updateOnlineStatus);
+
+        // Check status on page load
+        updateOnlineStatus();
     </script>
 </body>
 </html>
