@@ -26,6 +26,11 @@
             text-align: center;
             background-color: #000;
             flex-direction: column;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+            -webkit-touch-callout: none; /* Disable touch callout */
         }
         .logo {
             position: absolute;
@@ -96,25 +101,6 @@
             font-weight: bold;
             font-size: 0.9em;
         }
-        @media (max-width: 768px) {
-            .greeting {
-                font-size: 2em;
-            }
-        }
-        /* Alert styling */
-        #offline-alert {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            background-color: red;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            z-index: 9999;
-        }
     </style>
 </head>
 <body>
@@ -137,6 +123,18 @@
         const hours = now.getHours();
         const month = now.getMonth();
         const date = now.getDate();
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Disable common developer tools shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'I')) {
+                e.preventDefault();
+            }
+        });
 
         // Function to set the background image using Unsplash API
         async function setBackgroundImage(query) {
