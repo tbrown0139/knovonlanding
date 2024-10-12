@@ -6,7 +6,7 @@ const urlsToCache = [
     '/manifest.json', // Manifest file
     '/sw.js', // Service worker file
     'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7', // Knovon logo
-    'https://your-default-image-url.com/default-image.jpg', // Default image
+    '/intricate-explorer-0wyWY_aJJEE-unsplash.jpg', // Default image
     'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg', // Disney icon
     'https://upload.wikimedia.org/wikipedia/commons/4/45/New_Logo_Gmail.svg', // Gmail icon
     'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png', // Zoho icon
