@@ -91,7 +91,7 @@ I'm sexy and I know it
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Knovon Landing Page">
-    <link rel="apple-touch-icon" href="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7">
+    <link rel="apple-touch-icon" href="https://mytab.knovon.net/knovontablogo.png">
     <link rel="manifest" href="/manifest.json">
     <style>
         body {
@@ -109,11 +109,11 @@ I'm sexy and I know it
             text-align: center;
             background-color: #000;
             flex-direction: column;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE10+/Edge */
-            user-select: none; /* Standard */
-            -webkit-touch-callout: none; /* Disable touch callout */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
         .logo {
             position: absolute;
@@ -184,14 +184,91 @@ I'm sexy and I know it
             font-weight: bold;
             font-size: 0.9em;
         }
+
+        /* Modal Styles */
+        #settingsModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #settingsModal h2 {
+            margin: 0 0 20px;
+        }
+
+        #settingsModal label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        #settingsModal button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #settingsModal button:hover {
+            background-color: #555;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #111;
+            color: white;
+        }
+
+        /* Snow mode styles */
+        .snowflake {
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: snow 10s linear infinite;
+        }
+
+        @keyframes snow {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-    <img class="logo" src="https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7" alt="Knovon Logo">
+    <img class="logo" src="https://mytab.knovon.net/knovontablogo.png" alt="Knovon Logo">
     <a class="portal-link" href="https://my.knovon.org" target="_blank">My Portal</a>
     <div class="greeting" id="greeting">Good Morning</div>
     <div class="date" id="date"></div>
     <div class="apps" id="apps-container"></div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal">
+        <h2>Settings</h2>
+        <label>
+            <input type="checkbox" id="darkModeCheckbox"> Enable Dark Mode
+        </label>
+        <label>
+            <input type="checkbox" id="snowModeCheckbox"> Enable Snow Mode
+        </label>
+        <button id="saveSettings">Save Settings</button>
+    </div>
 
     <!-- Offline Alert -->
     <div id="offline-alert">You are currently offline</div>
@@ -202,22 +279,15 @@ I'm sexy and I know it
         const dateElement = document.getElementById('date');
         const appsContainer = document.getElementById('apps-container');
         const offlineAlert = document.getElementById('offline-alert');
+        const settingsModal = document.getElementById('settingsModal');
+        const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+        const snowModeCheckbox = document.getElementById('snowModeCheckbox');
+        const saveSettingsButton = document.getElementById('saveSettings');
+
         const now = new Date();
         const hours = now.getHours();
         const month = now.getMonth();
         const date = now.getDate();
-
-        // Disable right-click
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // Disable common developer tools shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'I')) {
-                e.preventDefault();
-            }
-        });
 
         // Function to set the background image using Unsplash API
         async function setBackgroundImage(query) {
@@ -240,65 +310,76 @@ I'm sexy and I know it
         // Display the formatted date
         dateElement.textContent = formatDate(now);
 
-        // Determine the time-based greeting and background
-        if ((month === 11 && date === 24) || (month === 11 && date === 25)) {
-            greetingElement.textContent = 'Merry Christmas';
-            setBackgroundImage('christmas');
-        } else if (month === 11 && date === 31) {
-            greetingElement.textContent = 'Happy New Year';
-            setBackgroundImage('new year');
-        } else if (month === 0 && date === 1) {
-            greetingElement.textContent = 'Happy New Year';
-            setBackgroundImage('new year');
-        } else if (month === 6 && date === 4) {
-            greetingElement.textContent = 'Happy 4th of July';
-            setBackgroundImage('4th of July');
-        } else if (month === 10 && date === 11) {
-            greetingElement.textContent = 'Happy Birthday to our founder';
-            setBackgroundImage('celebration');
-        } else if (month === 9 && date === 31) {
-            greetingElement.textContent = 'Happy Halloween';
-            setBackgroundImage('halloween');
-        } else if (hours < 12) {
-            greetingElement.textContent = 'Good Morning';
-            setBackgroundImage('utah');
-        } else if (hours < 18) {
-            greetingElement.textContent = 'Good Afternoon';
-            setBackgroundImage('utah');
-        } else {
-            greetingElement.textContent = 'Good Evening';
-            setBackgroundImage('utah');
+        // Open settings modal on "S" key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 's') {
+                settingsModal.style.display = 'block';
+                loadSettings(); // Load existing settings
+            }
+        });
+
+        // Load saved settings from localStorage
+        function loadSettings() {
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            const snowModeEnabled = localStorage.getItem('snowMode') === 'true';
+            darkModeCheckbox.checked = darkModeEnabled;
+            snowModeCheckbox.checked = snowModeEnabled;
+
+            if (darkModeEnabled) {
+                document.body.classList.add('dark-mode');
+            }
+
+            if (snowModeEnabled) {
+                startSnow();
+            }
         }
 
-        // List of apps with their names, URLs, and icons
-        const apps = [
-            { name: 'Disney Plus', url: 'https://disneyplus.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
-            { name: 'Knovon', url: 'https://knovon.org', icon: 'https://ok12static.oktacdn.com/fs/bco/1/fs0ieyg1efEWrp7oR5d7' },
-            { name: 'Gmail', url: 'https://mail.google.com', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png' },
-            { name: 'Zoho Mail', url: 'https://mail.zoho.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoho-logo.png' },
-            { name: 'Roblox', url: 'https://roblox.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Logo.svg' },
-            { name: 'GitHub', url: 'https://github.com', icon: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' },
-            { name: 'Canva', url: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Canva_Logo.png' },
-            { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' }
-        ];
+        // Close modal and save settings
+        saveSettingsButton.addEventListener('click', () => {
+            const darkModeEnabled = darkModeCheckbox.checked;
+            const snowModeEnabled = snowModeCheckbox.checked;
 
-        // Function to randomly select 3 apps and display them
-        function displayRandomApps() {
-            const selectedApps = apps.sort(() => 0.5 - Math.random()).slice(0, 3);
-            selectedApps.forEach(app => {
-                const appCard = document.createElement('div');
-                appCard.className = 'app-card';
-                appCard.innerHTML = `
-                    <a href="${app.url}" target="_blank">
-                        <img src="${app.icon}" alt="${app.name} Icon">
-                        <div>${app.name}</div>
-                    </a>
-                `;
-                appsContainer.appendChild(appCard);
-            });
+            // Save settings to localStorage
+            localStorage.setItem('darkMode', darkModeEnabled);
+            localStorage.setItem('snowMode', snowModeEnabled);
+
+            // Apply dark mode
+            if (darkModeEnabled) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+
+            // Apply snow mode
+            if (snowModeEnabled) {
+                startSnow();
+            } else {
+                stopSnow();
+            }
+
+            // Close modal
+            settingsModal.style.display = 'none';
+        });
+
+        // Snow mode logic
+        function startSnow() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            document.body.appendChild(snowflake);
+            setInterval(() => {
+                const newSnowflake = snowflake.cloneNode(true);
+                newSnowflake.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(newSnowflake);
+                setTimeout(() => newSnowflake.remove(), 10000);
+            }, 300);
         }
 
-        displayRandomApps();
+        function stopSnow() {
+            document.querySelectorAll('.snowflake').forEach(snowflake => snowflake.remove());
+        }
+
+        // Initial load of settings
+        loadSettings();
 
         // Register Service Worker
         if ('serviceWorker' in navigator) {
@@ -328,3 +409,4 @@ I'm sexy and I know it
     </script>
 </body>
 </html>
+
