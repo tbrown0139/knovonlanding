@@ -85,11 +85,8 @@ I'm sexy and I know it
     <meta charset="UTF-8">
     <title>Knovon Landing Page</title>
     <!-- Font Awesome for weather icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          integrity="sha512-Fo3rlrZj/k7ujTTXRN4I+P48EXZbipylgP+JW3vO+6rgpeIYhTtx6yl6z1HJDmZ7ld9iJqjw6P+Re5u5X25eNQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-jQ3ol0UOmJfaeg65XwtB7tcGvmIHzDZfHCIcd20NQ0aZD7DQEMxx6uRO/pHh1jfSk+qA3kw4P+3R8ZG8fn8H5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Web app meta tags for iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Knovon Landing Page">
@@ -111,11 +108,11 @@ I'm sexy and I know it
             text-align: center;
             background-color: #000;
             flex-direction: column;
-            -webkit-user-select: none; /* Disable text selection */
+            -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            -webkit-touch-callout: none; /* Disable callout on touch */
+            -webkit-touch-callout: none;
         }
         .logo {
             position: absolute;
@@ -186,7 +183,6 @@ I'm sexy and I know it
             font-weight: bold;
             font-size: 0.9em;
         }
-
         /* Weather widget styling */
         .weather-widget {
             position: absolute;
@@ -266,7 +262,7 @@ I'm sexy and I know it
     <div class="weather-widget" id="weather-widget">
         <i class="fas fa-cloud weather-icon" id="weather-icon"></i>
         <div>
-            <div class="temp" id="temperature">--°C</div>
+            <div class="temp" id="temperature">--°F</div>
             <div class="location" id="location">Loading...</div>
         </div>
     </div>
@@ -311,10 +307,14 @@ I'm sexy and I know it
             return codeMap[weatherCode] || 'fas fa-cloud';
         }
 
+        // Convert Celsius to Fahrenheit
+        function convertCtoF(celsius) {
+            return Math.round(celsius * 9 / 5 + 32);
+        }
+
         // Check for severe weather conditions
         function isSevereWeather(weatherCode) {
-            // Weather codes for rain, thunderstorms, etc.
-            return [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode);
+            return [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode); // Rain, thunderstorms
         }
 
         // Get user location and fetch weather data from Open-Meteo
@@ -325,13 +325,13 @@ I'm sexy and I know it
 
                 try {
                     // Fetch the current weather
-                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`);
                     const data = await response.json();
 
                     const { temperature, weathercode } = data.current_weather;
 
-                    // Update temperature
-                    document.getElementById('temperature').textContent = `${temperature}°C`;
+                    // Update temperature to Fahrenheit
+                    document.getElementById('temperature').textContent = `${temperature}°F`;
 
                     // Set the weather icon based on the weather condition code
                     const iconClass = getWeatherIcon(weathercode);
@@ -373,7 +373,7 @@ I'm sexy and I know it
 
         // Function to set the background image using Unsplash API
         async function setBackgroundImage(query) {
-            const UNSPLASH_ACCESS_KEY = 'YOUR_UNSPLASH_ACCESS_KEY'; // Replace with your Unsplash Access Key
+            const UNSPLASH_ACCESS_KEY = 'YOUR_UNSPLASH_ACCESS_KEY';
             try {
                 const response = await fetch(`https://api.unsplash.com/photos/random?query=${query}&client_id=${UNSPLASH_ACCESS_KEY}`);
                 const data = await response.json();
@@ -481,3 +481,4 @@ I'm sexy and I know it
     </script>
 </body>
 </html>
+
