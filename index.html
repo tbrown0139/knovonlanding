@@ -186,11 +186,6 @@ I'm sexy and I know it
             font-weight: bold;
             font-size: 0.9em;
         }
-        @media (max-width: 768px) {
-            .greeting {
-                font-size: 2em;
-            }
-        }
 
         /* Weather widget styling */
         .weather-widget {
@@ -240,6 +235,21 @@ I'm sexy and I know it
             font-weight: bold;
             z-index: 9999;
         }
+
+        /* Weather Alert Box */
+        .weather-alert {
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            width: 200px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -248,6 +258,9 @@ I'm sexy and I know it
     <div class="greeting" id="greeting">Good Morning</div>
     <div class="date" id="date"></div>
     <div class="apps" id="apps-container"></div>
+
+    <!-- Weather Alert -->
+    <div class="weather-alert" id="weather-alert">Severe Weather Warning!</div>
 
     <!-- Weather Widget -->
     <div class="weather-widget" id="weather-widget">
@@ -266,6 +279,7 @@ I'm sexy and I know it
         const greetingElement = document.getElementById('greeting');
         const dateElement = document.getElementById('date');
         const appsContainer = document.getElementById('apps-container');
+        const weatherAlert = document.getElementById('weather-alert');
         const offlineAlert = document.getElementById('offline-alert');
         const now = new Date();
         const hours = now.getHours();
@@ -273,7 +287,6 @@ I'm sexy and I know it
         const date = now.getDate();
 
         // Weather Widget using Open-Meteo API
-        // Function to map Open-Meteo weather codes to Font Awesome icons
         function getWeatherIcon(weatherCode) {
             const codeMap = {
                 0: 'fas fa-sun', // Clear sky
@@ -285,27 +298,23 @@ I'm sexy and I know it
                 51: 'fas fa-cloud-drizzle', // Light drizzle
                 53: 'fas fa-cloud-drizzle', // Moderate drizzle
                 55: 'fas fa-cloud-drizzle', // Dense drizzle
-                56: 'fas fa-cloud-drizzle', // Light freezing drizzle
-                57: 'fas fa-cloud-drizzle', // Dense freezing drizzle
                 61: 'fas fa-cloud-rain', // Slight rain
                 63: 'fas fa-cloud-rain', // Moderate rain
                 65: 'fas fa-cloud-showers-heavy', // Heavy rain
-                66: 'fas fa-cloud-rain', // Light freezing rain
-                67: 'fas fa-cloud-showers-heavy', // Heavy freezing rain
-                71: 'fas fa-snowflake', // Slight snow fall
-                73: 'fas fa-snowflake', // Moderate snow fall
-                75: 'fas fa-snowflake', // Heavy snow fall
-                77: 'fas fa-snowflake', // Snow grains
                 80: 'fas fa-cloud-showers-heavy', // Slight rain showers
                 81: 'fas fa-cloud-showers-heavy', // Moderate rain showers
                 82: 'fas fa-cloud-showers-heavy', // Violent rain showers
-                85: 'fas fa-snowflake', // Slight snow showers
-                86: 'fas fa-snowflake', // Heavy snow showers
                 95: 'fas fa-bolt', // Thunderstorm
                 96: 'fas fa-bolt', // Thunderstorm with slight hail
                 99: 'fas fa-bolt', // Thunderstorm with heavy hail
             };
             return codeMap[weatherCode] || 'fas fa-cloud';
+        }
+
+        // Check for severe weather conditions
+        function isSevereWeather(weatherCode) {
+            // Weather codes for rain, thunderstorms, etc.
+            return [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode);
         }
 
         // Get user location and fetch weather data from Open-Meteo
@@ -327,6 +336,11 @@ I'm sexy and I know it
                     // Set the weather icon based on the weather condition code
                     const iconClass = getWeatherIcon(weathercode);
                     document.getElementById('weather-icon').className = iconClass + ' weather-icon';
+
+                    // Show weather alert if severe weather
+                    if (isSevereWeather(weathercode)) {
+                        weatherAlert.style.display = 'block';
+                    }
 
                     // Fetch the location name using reverse geocoding
                     const locationResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
@@ -467,4 +481,3 @@ I'm sexy and I know it
     </script>
 </body>
 </html>
-
